@@ -12,3 +12,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 1rem;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  border-bottom: 1px solid #ccc;
+}
+
+td:last-child {
+  width: 20%;
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    width: 48rem;
+    margin: auto;
+  }
+}
