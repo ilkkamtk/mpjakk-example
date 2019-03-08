@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import Table from './components/table';
+import {getAllMedia} from './util/mediaAPI';
 
 class App extends Component {
+
   state = {
     picArray: [],
   };
 
   componentDidMount() {
-    fetch('test.json').then(response => {
-      return response.json();
-    }).then(json => {
-      console.log(json);
-      this.setState({picArray: json});
+    getAllMedia().then((pics) => {
+      console.log(pics);
+      this.setState({picArray: pics});
     });
   }
 

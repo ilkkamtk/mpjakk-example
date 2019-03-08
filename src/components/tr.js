@@ -1,19 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+const mediaUrl = 'http://media.mw.metropolia.fi/wbma/uploads/';
+
+const Img = (props) => {
+  console.log('props', props);
+  const {thumbnails, screenshot, title} = props.pic;
+  if (thumbnails !== null) {
+    return <img src={mediaUrl + thumbnails.w160} alt={title}/>;
+  } else {
+    return <img src={mediaUrl + screenshot} alt={title}/>;
+  }
+};
+
 const Tr = (props) => {
-  const {thumbnails, title, description, filename} = props.pic;
+  const {title, description, filename} = props.pic;
   return (
       <tr>
         <td>
-          <img src={thumbnails.w160} alt={title}/>
+          <Img pic={props.pic}/>
         </td>
         <td>
           <h3>{title}</h3>
           <p>{description}</p>
         </td>
         <td>
-          <a href={filename}>View</a>
+          <a href={mediaUrl + filename}>View</a>
         </td>
       </tr>
   );
