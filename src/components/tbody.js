@@ -3,7 +3,7 @@ import Tr from './tr';
 import PropTypes from 'prop-types';
 
 const Tbody = (props) => {
-  const rows = props.picArray.map(function(item, i) {
+  const rows = props.picArray.map((item, i) => {
     return <Tr key={i} pic={item}/>;
   });
   return (
