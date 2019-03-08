@@ -1,6 +1,6 @@
 const apiUrl = 'http://media.mw.metropolia.fi/wbma/media/';
 
-const getAllMedia = async () => {
+const getAllMedia = () => {
   return fetch(apiUrl).then(response => {
     return response.json();
   }).then(json => {
@@ -13,7 +13,6 @@ const getAllMedia = async () => {
       console.log(pics);
       return pics;
     });
-
   });
 };
 
