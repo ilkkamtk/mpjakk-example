@@ -1,9 +1,17 @@
-import React from 'react'
+import React from 'react';
+import Tbody from './tbody';
+import PropTypes from 'prop-types';
 
 const Table = (props) => {
   return (
-      <table></table>
-  )
-}
+      <table>
+        <Tbody picArray={props.picArray}/>
+      </table>
+  );
+};
 
-export default Table
+Table.propTypes = {
+  picArray: PropTypes.array,
+};
+
+export default Table;
