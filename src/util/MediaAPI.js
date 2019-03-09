@@ -16,4 +16,14 @@ const getAllMedia = () => {
   });
 };
 
-export {getAllMedia};
+const getSingleMedia = (id) => {
+  return fetch(apiUrl+id).then(response => {
+    return response.json();
+  }).then(json => {
+    return json;
+  });
+};
+
+
+
+export {getAllMedia, getSingleMedia};

@@ -1,5 +1,5 @@
 import React from 'react';
-import Tr from './tr';
+import Tr from './Tr';
 import PropTypes from 'prop-types';
 
 const Tbody = (props) => {

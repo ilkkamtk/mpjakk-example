@@ -1,5 +1,5 @@
 import React from 'react';
-import Tbody from './tbody';
+import Tbody from './Tbody';
 import PropTypes from 'prop-types';
 
 const Table = (props) => {
