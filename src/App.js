@@ -4,11 +4,17 @@ import {getAllMedia} from './util/MediaAPI';
 import Front from './views/Front';
 import Single from './views/Single';
 import Nav from './views/Nav';
+import Login from './views/Login';
 
 class App extends Component {
 
   state = {
     picArray: [],
+    user: null,
+  };
+
+  setUser = (user) => {
+    this.setState({user});
   };
 
   componentDidMount() {
@@ -28,6 +34,10 @@ class App extends Component {
             )}/>
 
             <Route path="/single/:id" component={Single}/>
+
+            <Route path="/Login" render={(props) => (
+                <Login {...props} setUser={this.setUser}/>
+            )}/>
           </div>
         </Router>
     );
