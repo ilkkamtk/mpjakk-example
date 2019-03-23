@@ -3,7 +3,8 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import {getAllMedia} from './util/MediaAPI';
 import Front from './views/Front';
 import Single from './views/Single';
-import Nav from './views/Nav';
+import Nav from './components/Nav';
+import Profile from './views/Profile';
 
 class App extends Component {
 
@@ -21,12 +22,12 @@ class App extends Component {
   render() {
     return (
         <Router>
-          <div>
+          <div className='container'>
             <Nav/>
             <Route exact path="/" render={(props) => (
                 <Front {...props} picArray={this.state.picArray}/>
             )}/>
-
+            <Route path="/profile" component={Profile}/>
             <Route path="/single/:id" component={Single}/>
           </div>
         </Router>

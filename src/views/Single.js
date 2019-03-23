@@ -5,7 +5,10 @@ import {getSingleMedia} from '../util/MediaAPI';
 class Single extends Component {
   mediaUrl = 'http://media.mw.metropolia.fi/wbma/uploads/';
   state = {
-    file: 'http://placekitten.com/200/200',
+    file: {
+      filename: 'b2db3cce51674aba84d9476a545c5cc4.jpg',
+      title: 'Test',
+    },
   };
 
   componentDidMount() {
@@ -18,7 +21,11 @@ class Single extends Component {
 
   render() {
     return (
-        <img src={this.mediaUrl + this.state.file.filename} alt={this.state.file.title}/>
+        <React.Fragment>
+          <h1>{this.state.file.title}</h1>
+          <img src={this.mediaUrl + this.state.file.filename}
+               alt={this.state.file.title}/>
+        </React.Fragment>
     );
   }
 

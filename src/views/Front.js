@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 const Front = (props) => {
   const {picArray} = props;
   return (
-      <div className="container">
+      <React.Fragment>
         <Table picArray={picArray}/>
-      </div>
+      </React.Fragment>
   );
 };
 
