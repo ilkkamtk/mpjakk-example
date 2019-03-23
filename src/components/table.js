@@ -1,11 +1,16 @@
 import React from 'react';
-import Tbody from './tbody';
 import PropTypes from 'prop-types';
+import Tr from './tr';
 
 const Table = (props) => {
+  const rows = props.picArray.map((item, i) => {
+    return <Tr key={i} pic={item}/>;
+  });
   return (
       <table>
-        <Tbody picArray={props.picArray}/>
+        <tbody>
+        {rows}
+        </tbody>
       </table>
   );
 };

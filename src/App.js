@@ -1,17 +1,27 @@
 import React, {Component} from 'react';
 import Table from './components/table';
-import {getAllMedia} from './util/mediaAPI';
 
 class App extends Component {
+
+  apiUrl = 'http://media.mw.metropolia.fi/wbma/media/';
 
   state = {
     picArray: [],
   };
 
   componentDidMount() {
-    getAllMedia().then((pics) => {
-      console.log(pics);
-      this.setState({picArray: pics});
+    fetch(this.apiUrl).then(response => {
+      return response.json();
+    }).then(json => {
+      console.log(json);
+      return Promise.all(json.map(pic => {
+        return fetch(this.apiUrl + pic.file_id).then(response => {
+          return response.json();
+        });
+      })).then(pics => {
+        console.log(pics);
+        this.setState({picArray: pics});
+      });
     });
   }
 
