@@ -19,8 +19,6 @@ const getAllMedia = () => {
 const getSingleMedia = (id) => {
   return fetch(apiUrl + 'media/' + id).then(response => {
     return response.json();
-  }).then(json => {
-    return json;
   });
 };
 
@@ -28,15 +26,37 @@ const login = (username, password) => {
   const settings = {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({username, password}),
   };
   return fetch(apiUrl + 'login', settings).then(response => {
     return response.json();
-  }).then(json => {
-    return json;
   });
 };
 
-export {getAllMedia, getSingleMedia, login};
+const register = (user) => {
+  const settings = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
+  };
+  return fetch(apiUrl + 'users', settings).then(response => {
+    return response.json();
+  });
+};
+
+const getUser = (token) => {
+  const settings = {
+    headers: {
+      'x-access-token': token,
+    }
+  };
+  return fetch(apiUrl + 'users/user', settings).then(response => {
+    return response.json();
+  });
+}
+
+export {getAllMedia, getSingleMedia, login, register, getUser};
