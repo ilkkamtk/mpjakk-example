@@ -52,11 +52,23 @@ const getUser = (token) => {
   const settings = {
     headers: {
       'x-access-token': token,
-    }
+    },
   };
   return fetch(apiUrl + 'users/user', settings).then(response => {
     return response.json();
   });
-}
+};
 
-export {getAllMedia, getSingleMedia, login, register, getUser};
+const checkUser = (username) => {
+  return fetch(apiUrl + 'users/username/' + username).then(response => {
+    return response.json();
+  });
+};
+
+const getFilesByTag = (tag) => {
+  return fetch(apiUrl + 'tags/' + tag).then(response => {
+    return response.json();
+  });
+};
+
+export {getAllMedia, getSingleMedia, login, register, getUser, getFilesByTag, checkUser};

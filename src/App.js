@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import {getAllMedia} from './util/MediaAPI';
+import {getAllMedia, getFilesByTag} from './util/MediaAPI';
 import Front from './views/Front';
 import Single from './views/Single';
 import Nav from './components/Nav';
@@ -17,6 +17,28 @@ class App extends Component {
   };
 
   setUser = (user) => {
+    // hae profiilikuva ja liitä se user-objektiin
+    getFilesByTag('profile').then((files) => {
+      const profilePic = files.filter((file) => {
+        let outputFile = null;
+        if (file.user_id === this.state.user.user_id) {
+          outputFile = file;
+        }
+        return outputFile;
+      });
+      this.setState((prevState) => {
+        return {
+          user: {
+            ...prevState.user,
+            profilePic: profilePic[0],
+          },
+        };
+      });
+    });
+    this.setState({user});
+  };
+
+  setUserLogout = (user) => {
     this.setState({user});
   };
 
@@ -29,6 +51,7 @@ class App extends Component {
       console.log(pics);
       this.setState({picArray: pics});
     });
+
   }
 
   render() {
@@ -54,7 +77,7 @@ class App extends Component {
               )}/>
 
               <Route path="/logout" render={(props) => (
-                  <Logout {...props} setUser={this.setUser}/>
+                  <Logout {...props} setUserLogout={this.setUserLogout}/>
               )}/>
             </Grid>
           </Grid>
