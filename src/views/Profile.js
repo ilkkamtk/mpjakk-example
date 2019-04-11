@@ -25,7 +25,7 @@ const styles = {
 const Profile = (props) => {
   // korjataan profiilisivun latausongelma
   if (props.user === null) {
-    return <Redirect to="/"/>;
+    return <Redirect to="/" />;
   }
 
   const {username, email, full_name, profilePic} = props.user;

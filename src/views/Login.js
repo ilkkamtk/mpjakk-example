@@ -205,8 +205,8 @@ class Login extends Component {
           </React.Fragment>
           }
           <p className={classes.alert}>
-            {this.state.message}
-          </p>
+          {this.state.message}
+        </p>
         </div>
     );
   }

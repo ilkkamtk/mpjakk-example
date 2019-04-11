@@ -8,6 +8,7 @@ import Login from './views/Login';
 import Profile from './views/Profile';
 import Logout from './views/Logout';
 import Grid from '@material-ui/core/Grid';
+import Upload from './views/Upload';
 
 class App extends Component {
 
@@ -46,12 +47,15 @@ class App extends Component {
     return this.state.user !== null;
   };
 
-  componentDidMount() {
+  updateImages = () => {
     getAllMedia().then((pics) => {
       console.log(pics);
       this.setState({picArray: pics});
     });
+  };
 
+  componentDidMount() {
+    this.updateImages();
   }
 
   render() {
@@ -64,6 +68,10 @@ class App extends Component {
             <Grid item sm={10}>
               <Route path="/home" render={(props) => (
                   <Front {...props} picArray={this.state.picArray}/>
+              )}/>
+
+              <Route path="/upload" render={(props) => (
+                  <Upload {...props} updateImages={this.updateImages}/>
               )}/>
 
               <Route path="/single/:id" component={Single}/>
