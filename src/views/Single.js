@@ -5,7 +5,12 @@ import {getSingleMedia} from '../util/MediaAPI';
 class Single extends Component {
   mediaUrl = 'http://media.mw.metropolia.fi/wbma/uploads/';
   state = {
-    file: 'http://placekitten.com/200/200',
+    file: {
+      filename: '',
+      title: '',
+      description: '[d][/d][f][/f]',
+      media_type: 'image/jpg',
+    },
     filters: {
       brightness: 100,
       contrast: 100,
@@ -48,15 +53,27 @@ class Single extends Component {
   };
 
   render() {
+    const {title, description, filename, media_type} = this.state.file;
+    const {brightness, contrast, saturation, warmth} = this.state.filters;
     return (
         <React.Fragment>
-          <h1>{this.state.file.title}</h1>
-          <img src={this.mediaUrl + this.state.file.filename}
-               alt={this.state.file.title}
-               style={{filter: `brightness(${this.state.filters.brightness}%) contrast(${this.state.filters.contrast}%) sepia(${this.state.filters.warmth}%) saturate(${this.state.filters.saturation}%)`}}
-          />
+          {console.log(media_type)}
+          <h1>{title}</h1>
+          {media_type.includes('image') &&
+          <img src={this.mediaUrl + filename}
+               alt={title}
+               style={{filter: `brightness(${brightness}%) contrast(${contrast}%) sepia(${warmth}%) saturate(${saturation}%)`}}
+          />}
+          {media_type.includes('video') &&
+          <video src={this.mediaUrl + filename}
+                 controls
+          />}
+          {media_type.includes('audio') &&
+          <audio src={this.mediaUrl + filename}
+                 controls
+          />}
           <p>
-            {this.getDescription(this.state.file.description)}
+            {this.getDescription(description)}
           </p>
         </React.Fragment>
     );

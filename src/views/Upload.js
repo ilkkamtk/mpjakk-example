@@ -140,8 +140,8 @@ class Upload extends Component {
                        onChange={this.handleFileChange}
                        fullWidth/>
             <Button type="submit" variant="contained"
-                    color="primary">Upload&nbsp;{this.state.loading &&
-            <CircularProgress size={20}/>}</Button>
+                    color="primary">Upload&nbsp;&nbsp;{this.state.loading &&
+            <CircularProgress size={20} color="secondary"/>}</Button>
           </ValidatorForm>
           {this.state.imageData !== null && this.state.type.includes('image') &&
           <div><img src={this.state.imageData} alt="preview"
