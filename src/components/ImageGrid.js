@@ -8,7 +8,7 @@ import {
   ListSubheader,
   IconButton,
 } from '@material-ui/core';
-import {OpenWith, Create, Clear} from '@material-ui/icons';
+import {OpenWith, Create, Clear, Photo, VideoLabel, Audiotrack} from '@material-ui/icons';
 import {getFilters} from '../util/MediaAPI';
 
 const mediaUrl = 'http://media.mw.metropolia.fi/wbma/uploads/';
@@ -34,15 +34,31 @@ const ImageGrid = (props) => {
         </GridListTile>
         {props.picArray.map(tile => (
             <GridListTile key={tile.file_id}>
-              {tile.thumbnails !== undefined &&
-              (<img src={mediaUrl + tile.thumbnails.w160} alt={tile.title}
-                    style={getFiltersToGrid(tile)}/>
-                  ||
-                  <img src="http://placekitten.com/400/400" alt={tile.title}/>)}
+              {tile.media_type === 'image' &&
+              <img src={mediaUrl + tile.thumbnails.w160} alt={tile.title}
+                   style={getFiltersToGrid(tile)}/>
+              }
+              {tile.media_type === 'video' &&
+              <img src={mediaUrl + tile.screenshot} alt={tile.title}/>
+              }
+              {tile.media_type === 'audio' &&
+              <img src="http://placekitten.com/400/400" alt={tile.title}/>
+              }
               <GridListTileBar
                   title={tile.title}
                   actionIcon={
                     <React.Fragment>
+                      <IconButton>
+                      {tile.media_type === 'image' &&
+                      <Photo color="secondary"/>
+                      }
+                      {tile.media_type === 'video' &&
+                      <VideoLabel color="secondary"/>
+                      }
+                      {tile.media_type === 'audio' &&
+                      <Audiotrack color="secondary"/>
+                      }
+                      </IconButton>
                       <IconButton component={Link}
                                   to={'single/' + tile.file_id}>
                         <OpenWith color="secondary"/>

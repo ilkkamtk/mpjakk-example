@@ -64,10 +64,10 @@ class App extends Component {
     return (
         <Router basename='/~ilkkamtk/mpjakk-react'>
           <Grid container>
-            <Grid item sm={3}>
+            <Grid item sm={2}>
               <Nav checkLogin={this.checkLogin}/>
             </Grid>
-            <Grid item sm={9}>
+            <Grid item sm={10}>
               <Route path="/home" render={(props) => (
                   <Front {...props} picArray={this.state.picArray}/>
               )}/>
