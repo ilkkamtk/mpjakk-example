@@ -8,7 +8,7 @@ const Front = (props) => {
   return (
       <React.Fragment>
         {/* <Table picArray={picArray}/> */}
-        <ImageGrid picArray={picArray}/>
+        <ImageGrid picArray={picArray} edit={false}/>
       </React.Fragment>
   );
 };

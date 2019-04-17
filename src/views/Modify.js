@@ -2,23 +2,17 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import {Button, CircularProgress} from '@material-ui/core';
-import TextField from '@material-ui/core/es/TextField/TextField';
 import './css/Upload.css';
 import ImageEditor from '../components/ImageEditor';
+import {
+  getSingleMedia,
+  getFilters,
+  getDescription,
+  handleFetchErrors,
+} from '../util/MediaAPI';
 
-class Upload extends Component {
+class Modify extends Component {
   mediaUrl = 'http://media.mw.metropolia.fi/wbma/';
-
-  fr = new FileReader();
-
-  componentDidMount() {
-    this.fr.addEventListener('load', () => {
-      this.setState((prevState) => ({
-        ...prevState,
-        imageData: this.fr.result,
-      }));
-    });
-  }
 
   state = {
     file: {
@@ -26,6 +20,7 @@ class Upload extends Component {
       description: '',
       filedata: null,
       filename: undefined,
+      file_id: 0,
     },
     loading: false,
     imageData: null,
@@ -37,6 +32,20 @@ class Upload extends Component {
     },
     type: '',
   };
+
+  componentDidMount() {
+    const {id} = this.props.match.params;
+    getSingleMedia(id).then(pic => {
+      console.log('pic', pic);
+      console.log('filters', getFilters(pic.description, this.state.filters));
+      this.setState({
+        file: pic,
+        filters: getFilters(pic.description, this.state.filters),
+      }, () => {
+        console.log('state', this.state);
+      });
+    });
+  }
 
   handleFileChange = (evt) => {
     evt.persist();
@@ -70,32 +79,37 @@ class Upload extends Component {
   handleFileSubmit = (evt) => {
     console.log(evt);
     this.setState({loading: true});
-    const fd = new FormData();
-    fd.append('title', this.state.file.title);
-    const description = `[d]${this.state.file.description}[/d][f]${JSON.stringify(
-        this.state.filters)}[/f]`;
-    fd.append('description', description);
-    fd.append('file', this.state.file.filedata);
-
+    const data = {
+      title: this.state.file.title,
+      description: `[d]${getDescription(
+          this.state.file.description)}[/d][f]${JSON.stringify(
+          this.state.filters)}[/f]`,
+    };
     const options = {
-      method: 'POST',
-      body: fd,
+      method: 'PUT',
+      body: JSON.stringify(data),
       headers: {
+        'Content-type': 'application/json',
         'x-access-token': localStorage.getItem('token'),
       },
     };
 
-    fetch(this.mediaUrl + 'media', options).then(response => {
-      return response.json();
-    }).then(json => {
-      console.log(json);
-      setTimeout(() => {
-        this.props.history.push('/home');
-        this.props.updateImages();
-        this.setState({loading: false});
-      }, 2000);
+    fetch(this.mediaUrl + 'media/' + this.state.file.file_id, options)
+        .then(handleFetchErrors)
+        .then(response => {
+          return response.json();
+        })
+        .then(json => {
+          console.log(json);
+          setTimeout(() => {
+            this.setState({loading: false});
+            this.props.history.push('/my-files');
+          }, 2000);
 
-    });
+        })
+        .catch(err => {
+          console.log('error', err);
+        });
   };
 
   updateFilters = (newFilters) => {
@@ -107,7 +121,7 @@ class Upload extends Component {
   render() {
     return (
         <React.Fragment>
-          <h1>Upload</h1>
+          <h1>Modify</h1>
           <ValidatorForm instantValidate={false}
                          onSubmit={this.handleFileSubmit}
                          onError={errors => console.log(errors)}>
@@ -120,7 +134,7 @@ class Upload extends Component {
                              'minimum 3 charaters']}
                            fullWidth/>
             <TextValidator name="description" label="Description"
-                           value={this.state.file.description}
+                           value={getDescription(this.state.file.description)}
                            onChange={this.handleInputChange}
                            validators={['required', 'minStringLength:3']}
                            errorMessages={[
@@ -129,26 +143,22 @@ class Upload extends Component {
                            fullWidth
                            multiline
                            rows={3}/>
-            <TextField name="filedata" label="File"
-                       value={this.state.file.filename}
-                       type="file"
-                       onChange={this.handleFileChange}
-                       fullWidth/>
             <Button type="submit" variant="contained"
-                    color="primary">Upload&nbsp;&nbsp;{this.state.loading &&
+                    color="primary">Save&nbsp;&nbsp;{this.state.loading &&
             <CircularProgress size={20} color="secondary"/>}</Button>
           </ValidatorForm>
-          {this.state.imageData !== null && this.state.type.includes('image') &&
-          <ImageEditor state={this.state} updateFilters={this.updateFilters} />
+          {this.state.file.filename !== undefined &&
+          < ImageEditor state={this.state} updateFilters={this.updateFilters}/>
           }
         </React.Fragment>
     );
   }
 }
 
-Upload.propTypes = {
+Modify.propTypes = {
   history: PropTypes.object,
   updateImages: PropTypes.func,
+  match: PropTypes.object,
 };
 
-export default Upload;
+export default Modify;

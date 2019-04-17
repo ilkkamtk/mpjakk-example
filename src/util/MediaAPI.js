@@ -16,6 +16,22 @@ const getAllMedia = () => {
   });
 };
 
+const getMediaFromUser = (id) => {
+  return fetch(apiUrl + 'media/user/'+id).then(response => {
+    return response.json();
+  }).then(json => {
+    console.log(json);
+    return Promise.all(json.map(pic => {
+      return fetch(apiUrl + 'media/' + pic.file_id).then(response => {
+        return response.json();
+      });
+    })).then(pics => {
+      console.log(pics);
+      return pics;
+    });
+  });
+};
+
 const getSingleMedia = (id) => {
   return fetch(apiUrl + 'media/' + id).then(response => {
     return response.json();
@@ -71,4 +87,33 @@ const getFilesByTag = (tag) => {
   });
 };
 
-export {getAllMedia, getSingleMedia, login, register, getUser, getFilesByTag, checkUser};
+const getFilters = (text, defaultFilters) => {
+  const pattern = '\\[f\\](.*?)\\[\\/f\\]';
+  const re = new RegExp(pattern);
+  try {
+    return JSON.parse(re.exec(text)[1]);
+  } catch (e) {
+    // console.log(e);
+    return defaultFilters;
+  }
+};
+
+const getDescription = (text) => {
+  const pattern = '\\[d\\]((.|[\\r\\n])*?)\\[\\/d\\]';
+  const re = new RegExp(pattern);
+  console.log(re.exec(text));
+  try {
+    return re.exec(text)[1];
+  } catch (e) {
+    return text;
+  }
+};
+
+const handleFetchErrors = (response) => {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
+}
+
+export {getAllMedia, getSingleMedia, login, register, getUser, getFilesByTag, checkUser, getMediaFromUser, getFilters, getDescription, handleFetchErrors};

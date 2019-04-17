@@ -9,6 +9,8 @@ import Profile from './views/Profile';
 import Logout from './views/Logout';
 import Grid from '@material-ui/core/Grid';
 import Upload from './views/Upload';
+import MyFiles from './views/MyFiles';
+import Modify from './views/Modify';
 
 class App extends Component {
 
@@ -62,10 +64,10 @@ class App extends Component {
     return (
         <Router basename='/~ilkkamtk/mpjakk-react'>
           <Grid container>
-            <Grid item sm={2}>
+            <Grid item sm={3}>
               <Nav checkLogin={this.checkLogin}/>
             </Grid>
-            <Grid item sm={10}>
+            <Grid item sm={9}>
               <Route path="/home" render={(props) => (
                   <Front {...props} picArray={this.state.picArray}/>
               )}/>
@@ -76,8 +78,14 @@ class App extends Component {
 
               <Route path="/single/:id" component={Single}/>
 
+              <Route path="/modify/:id" component={Modify}/>
+
               <Route path="/profile" render={(props) => (
                   <Profile {...props} user={this.state.user}/>
+              )}/>
+
+              <Route path="/my-files" render={(props) => (
+                  <MyFiles {...props} user={this.state.user}/>
               )}/>
 
               <Route exact path="/" render={(props) => (

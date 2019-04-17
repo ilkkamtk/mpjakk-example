@@ -1,8 +1,10 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import {Redirect} from 'react-router-dom';
 import {
+  Button,
   Card,
   CardActionArea,
   CardContent,
@@ -47,6 +49,9 @@ const Profile = (props) => {
               <Typography component="p">
                 Full name: {full_name}
               </Typography>
+              <Button component={Link} to="/my-files">
+                My Files
+              </Button>
             </CardContent>
           </CardActionArea>
         </Card>
