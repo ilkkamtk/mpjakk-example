@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 // import Table from '../components/Table';
 import PropTypes from 'prop-types';
 import ImageGrid from '../components/ImageGrid';
-import {getMediaFromUser} from '../util/MediaAPI';
+import {deleteMedia, getMediaFromUser} from '../util/MediaAPI';
 
 class MyFiles extends Component {
   state = {
@@ -18,6 +18,17 @@ class MyFiles extends Component {
 
   deleteFile = (id) => {
     console.log('delete', id);
+    const cnfrm = window.confirm('Really? Delete?');
+    if (!cnfrm) {
+      return;
+    }
+
+    deleteMedia(id, localStorage.getItem('token')).then(response => {
+      this.updateUserImages();
+    }).catch(err => {
+      console.log(err);
+    });
+
   };
 
   componentDidMount() {

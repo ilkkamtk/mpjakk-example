@@ -8,7 +8,7 @@ import {
   getSingleMedia,
   getFilters,
   getDescription,
-  handleFetchErrors,
+  modify,
 } from '../util/MediaAPI';
 
 class Modify extends Component {
@@ -85,20 +85,8 @@ class Modify extends Component {
           this.state.file.description)}[/d][f]${JSON.stringify(
           this.state.filters)}[/f]`,
     };
-    const options = {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-type': 'application/json',
-        'x-access-token': localStorage.getItem('token'),
-      },
-    };
 
-    fetch(this.mediaUrl + 'media/' + this.state.file.file_id, options)
-        .then(handleFetchErrors)
-        .then(response => {
-          return response.json();
-        })
+    modify(this.state.file.file_id, data, localStorage.getItem('token'))
         .then(json => {
           console.log(json);
           setTimeout(() => {

@@ -1,5 +1,12 @@
 const apiUrl = 'http://media.mw.metropolia.fi/wbma/';
 
+const handleFetchErrors = (response) => {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
+};
+
 const getAllMedia = () => {
   return fetch(apiUrl + 'media/').then(response => {
     return response.json();
@@ -17,7 +24,7 @@ const getAllMedia = () => {
 };
 
 const getMediaFromUser = (id) => {
-  return fetch(apiUrl + 'media/user/'+id).then(response => {
+  return fetch(apiUrl + 'media/user/' + id).then(response => {
     return response.json();
   }).then(json => {
     console.log(json);
@@ -87,6 +94,52 @@ const getFilesByTag = (tag) => {
   });
 };
 
+const upload = (data, token) => {
+  const options = {
+    method: 'POST',
+    body: data,
+    headers: {
+      'x-access-token': token,
+    },
+  };
+
+  return fetch(apiUrl + 'media', options).then(response => {
+    return response.json();
+  });
+};
+
+const modify = (id, data, token) => {
+  const options = {
+    method: 'PUT',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-type': 'application/json',
+      'x-access-token': token,
+    },
+  };
+
+  return fetch(apiUrl + 'media/' + id, options)
+      .then(handleFetchErrors)
+      .then(response => {
+        return response.json();
+      });
+};
+
+const deleteMedia = (id, token) => {
+  const options = {
+    method: 'DELETE',
+    headers: {
+      'x-access-token': token,
+    },
+  };
+
+  return fetch(apiUrl + 'media/' + id, options)
+      .then(handleFetchErrors)
+      .then(response => {
+        return response.json();
+      });
+};
+
 const getFilters = (text, defaultFilters) => {
   const pattern = '\\[f\\](.*?)\\[\\/f\\]';
   const re = new RegExp(pattern);
@@ -109,11 +162,19 @@ const getDescription = (text) => {
   }
 };
 
-const handleFetchErrors = (response) => {
-  if (!response.ok) {
-    throw Error(response.statusText);
-  }
-  return response;
-}
-
-export {getAllMedia, getSingleMedia, login, register, getUser, getFilesByTag, checkUser, getMediaFromUser, getFilters, getDescription, handleFetchErrors};
+export {
+  getAllMedia,
+  getSingleMedia,
+  login,
+  register,
+  getUser,
+  getFilesByTag,
+  checkUser,
+  getMediaFromUser,
+  getFilters,
+  getDescription,
+  handleFetchErrors,
+  upload,
+  modify,
+  deleteMedia,
+};

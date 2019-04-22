@@ -5,6 +5,7 @@ import {Button, CircularProgress} from '@material-ui/core';
 import TextField from '@material-ui/core/es/TextField/TextField';
 import './css/Upload.css';
 import ImageEditor from '../components/ImageEditor';
+import {upload} from '../util/MediaAPI';
 
 class Upload extends Component {
   mediaUrl = 'http://media.mw.metropolia.fi/wbma/';
@@ -77,17 +78,7 @@ class Upload extends Component {
     fd.append('description', description);
     fd.append('file', this.state.file.filedata);
 
-    const options = {
-      method: 'POST',
-      body: fd,
-      headers: {
-        'x-access-token': localStorage.getItem('token'),
-      },
-    };
-
-    fetch(this.mediaUrl + 'media', options).then(response => {
-      return response.json();
-    }).then(json => {
+    upload(fd, localStorage.getItem('token')).then(json => {
       console.log(json);
       setTimeout(() => {
         this.props.history.push('/home');
@@ -95,7 +86,7 @@ class Upload extends Component {
         this.setState({loading: false});
       }, 2000);
 
-    });
+    })
   };
 
   updateFilters = (newFilters) => {
