@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {StateContext} from '../contexts/StateContext';
 
 class Logout extends Component {
 
   componentDidMount() {
     localStorage.removeItem('token');
-    this.props.setUserLogout(null);
+    const defaultUser = {
+      username: '',
+    };
+    this.context.setUser(defaultUser);
     this.props.history.push('/');
   }
 
@@ -19,8 +23,9 @@ class Logout extends Component {
 }
 
 Logout.propTypes = {
-  setUserLogout: PropTypes.func,
   history: PropTypes.object,
 };
+
+Logout.contextType = StateContext;
 
 export default Logout;

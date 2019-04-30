@@ -3,16 +3,14 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ImageGrid from '../components/ImageGrid';
 import {deleteMedia, getMediaFromUser} from '../util/MediaAPI';
+import {StateContext} from '../contexts/StateContext';
 
 class MyFiles extends Component {
-  state = {
-    picArray: [],
-  };
 
   updateUserImages = () => {
-    getMediaFromUser(this.props.user.user_id).then((pics) => {
+    getMediaFromUser(this.context.user.user_id).then((pics) => {
       console.log(pics);
-      this.setState({picArray: pics});
+      this.context.setPicArray(pics);
     });
   };
 
@@ -32,7 +30,7 @@ class MyFiles extends Component {
   };
 
   componentDidMount() {
-    if (!this.props.user) {
+    if (!this.context.checkLogin()) {
       this.props.history.push('/');
     } else {
       this.updateUserImages();
@@ -43,7 +41,7 @@ class MyFiles extends Component {
     return (
         <React.Fragment>
           {/* <Table picArray={this.picArray}/> */}
-          <ImageGrid picArray={this.state.picArray} edit={true}
+          <ImageGrid edit={true}
                      deleteFile={this.deleteFile}/>
         </React.Fragment>
     );
@@ -51,8 +49,9 @@ class MyFiles extends Component {
 }
 
 MyFiles.propTypes = {
-  user: PropTypes.object,
   history: PropTypes.object,
 };
+
+MyFiles.contextType = StateContext;
 
 export default MyFiles;
